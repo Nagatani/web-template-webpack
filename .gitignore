@@ -61,6 +61,3 @@ typings/
 
 # next.js build output
 .next
-
-# Temporarily exclude subjects
-package-lock.json
