@@ -1,9 +1,11 @@
+const path = require('path');
 const MODE = 'production';
 //const MODE = 'development';
 
 module.exports = {
   mode: MODE,
-  devtool: 'source-map',
+  entry: './src/index.ts',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -36,10 +38,26 @@ module.exports = {
           },
         ]
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
     ],
   },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ]
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
   devServer: {
-    contentBase: 'dist',
-    open: true
-  }
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000
+  },
+  performance: {
+    hints: false
+  },
 };
