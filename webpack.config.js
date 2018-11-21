@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
+const CSSCombPlugin = require('csscomb-webpack-plugin');
 
 // const MODE = 'production';
 const MODE = 'development';
@@ -42,11 +43,6 @@ module.exports = (env) => {
           }
         },
         {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: ['eslint-loader']
-        },
-        {
           test: /\.scss$/,
           use: ExtractTextPlugin.extract({
             use: [
@@ -73,7 +69,6 @@ module.exports = (env) => {
                   outputStyle: 'expanded',
                 }
               },
-              'csscomb-loader',
             ]
           })
         },
@@ -95,6 +90,10 @@ module.exports = (env) => {
           }
         },
         replace: ['type="text/javascript"']
+      }),
+      new CSSCombPlugin({
+        configFile: './.csscomb',
+        files: '.src/*.s?(a|c)ss',
       }),
     ],
     performance: {

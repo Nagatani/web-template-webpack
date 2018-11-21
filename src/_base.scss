@@ -1,11 +1,18 @@
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*,
+*::before,
+*::after
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-html, body {
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "ヒラギノ角ゴ ProN W3", Hiragino Kaku Gothic ProN, "メイリオ", Meiryo, Arial, sans-serif;
-  font-feature-settings: "palt";
-  font-size: 14pt;
+html,
+body
+{
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'ヒラギノ角ゴ ProN W3', Hiragino Kaku Gothic ProN, 'メイリオ', Meiryo, Arial, sans-serif;
+    font-size: 14pt;
+
+    height: 100%;
+
+    font-feature-settings: 'palt';
 }
