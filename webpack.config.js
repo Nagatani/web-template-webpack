@@ -1,63 +1,104 @@
 const path = require('path');
-const MODE = 'production';
-//const MODE = 'development';
 
-module.exports = {
-  mode: MODE,
-  entry: './src/index.ts',
-  devtool: 'inline-source-map',
-  module: {
-    rules: [
-      {
-        test: /\.scss/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              url: false,
-              sourceMap: true,
-              minimize: true,
-              importLoaders: 2
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins: [
-                require('autoprefixer')({grid: true})
-              ]
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            }
-          },
-        ]
-      },
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      },
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
+
+// const MODE = 'production';
+const MODE = 'development';
+
+module.exports = (env) => {
+  return {
+    mode: MODE,
+    entry: [
+      path.join(__dirname, 'src/style.scss'),
+      path.join(__dirname, 'src/index.js'),
     ],
-  },
-  resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 9000
-  },
-  performance: {
-    hints: false
-  },
+    optimization: {
+      runtimeChunk: true
+    },
+    output: {
+      path: path.join(__dirname, 'dist'),
+      filename: `bundle.[chunkhash].js`
+    },
+    devServer: {
+      contentBase: path.resolve(__dirname, 'src/'),
+      compress: true,
+      port: 9000
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                ['env', {'modules': false}]
+              ]
+            }
+          }
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ['eslint-loader']
+        },
+        {
+          test: /\.scss$/,
+          use: ExtractTextPlugin.extract({
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  url: false,
+                  sourceMap: (MODE == 'development'),
+                  minimize: (MODE != 'development'),
+                  importLoaders: 2
+                }
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: (MODE == 'development'),
+                  plugins: [require('autoprefixer')]
+                },
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  sourceMap: (MODE == 'development'),
+                  outputStyle: 'expanded',
+                }
+              },
+              'csscomb-loader',
+            ]
+          })
+        },
+      ]
+    },
+    plugins: [
+      new ExtractTextPlugin(`style.[chunkhash].css`),
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+      }),
+      new CleanWebpackPlugin(['dist/*.html', 'dist/*.js', 'dist/*.css']),
+      new HtmlBeautifyPlugin({
+        config: {
+          html: {
+            end_with_newline: true,
+            indent_size: 2,
+            indent_inner_html: true,
+            unformatted: ['i', 'b', 'span']
+          }
+        },
+        replace: ['type="text/javascript"']
+      }),
+    ],
+    performance: {
+      hints: false
+    },
+  };
 };
