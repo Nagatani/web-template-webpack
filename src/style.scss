@@ -1,25 +1,69 @@
 @import "colors";
 @import "base";
 
-body {
-  background: $color-base;
-  color: $color-text;
+html {
+  font-size: 14pt;
 }
+
+body {
+  background: url("img/main-bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  color: $color-text;
+  overflow-x: hidden;
+}
+
 a {
   color: $color-link;
 }
-h1, h2, h3, h4, h5, h6 {
-  color: $color-accent;
-}
-p {
-  background: rgba(0,0,0,0.5);
-  border-radius: 8px;
-  margin: 1rem;
-  padding: 1rem;
-}
-header {
-  padding: 1rem;
-}
+
 main {
-  padding: 1rem;
+  background: rgba(255,255,255, 0.8);
+  transform: rotate(-10deg);
+  width: 200%;
+  margin-left: -50%;
+  padding: 10% calc(50% + 2rem);
+
+  .inner {
+    transform: rotate(10deg);
+    position: relative;
+  }
+
+  .profile-name {
+    color: #fff;
+
+    h1 {
+      font-size: 5vw;
+    }
+
+    h2 {
+      font-size: 3vw;
+    }
+  }
+
+  .profile-name::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -25vw;
+    transform: rotate(7.5deg);
+    height: 40vh;
+    width: 150vw;
+    z-index: -1;
+    background-color: rgba(0,0,0,1);
+    background-image: url("img/photo.jpg");
+    background-position: 70vw 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .profile-text {
+    min-width: 320px;
+    width: 50vw;
+    margin-top: 15vh;
+    padding: 3rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }

@@ -6,8 +6,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
 const CSSCombPlugin = require('csscomb-webpack-plugin');
 
-// const MODE = 'production';
-const MODE = 'development';
+const MODE = 'production';
+// const MODE = 'development';
 
 module.exports = (env) => {
   return {
